@@ -1,9 +1,10 @@
+const requireAuth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
 
 // GET all students
-router.get('/', async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
     try {
         const students = await Student.find();
         res.json(students);
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST new student
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
     try {
         const newStudent = await Student.create(req.body);
         res.status(201).json(newStudent);
@@ -23,7 +24,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT update student
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
     try {
         const updatedStudent = await Student.findByIdAndUpdate(
             req.params.id,
@@ -40,7 +41,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE student
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
     try {
         const deletedStudent = await Student.findByIdAndDelete(req.params.id);
         if (!deletedStudent) {
