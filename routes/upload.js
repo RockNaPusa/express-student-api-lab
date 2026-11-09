@@ -24,4 +24,24 @@ router.post('/', requireAuth, upload.single('file'), async (req, res) => {
   }
 });
 
+
+
+//the extra task -delete /api/upload/:publicId --- delete file from coudinary
+
+router.delete('/:folder/:id', requireAuth, async (req, res) => {
+  try {
+    const publicId = `${req.params.folder}/${req.params.id}`;
+
+    const result = await cloudinary.uploader.destroy(publicId);
+
+    if (result.result !== 'ok') {
+      return res.status(404).json({ error: 'File not found or already deleted', cloudinaryResult: result });
+    }
+
+    res.json({ message: 'File deleted successfully', publicId });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
