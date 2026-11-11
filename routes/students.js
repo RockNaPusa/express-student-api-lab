@@ -4,8 +4,6 @@ const router = express.Router();
 const Student = require('../models/Student');
 const Course = require('../models/Course');
 
-// Lesson 8, Task 2: AGGREGATION ENDPOINT
-// MUST BE PLACED BEFORE GET /:id
 router.get('/stats', requireAuth, async (req, res) => {
     try {
         const stats = await Student.aggregate([
@@ -19,12 +17,10 @@ router.get('/stats', requireAuth, async (req, res) => {
     }
 });
 
-// Lesson 8, Task 1: POPULATE ENDPOINT
-// GET all students (UPDATED for Lesson 8 - populate)
+// GET 
 router.get('/', requireAuth, async (req, res) => {
     try {
         const students = await Student.find()
-            // This is Task 1: Mongoose populate with field selection
             .populate('createdBy', 'email role -_id') 
             .populate('enrolledCourses', 'title code');
         res.json(students);
@@ -33,7 +29,7 @@ router.get('/', requireAuth, async (req, res) => {
     }
 });
 
-// POST new student
+// POST 
 router.post('/', requireAuth, async (req, res) => {
     try {
         // Automatically assign the logged-in user's ID as the creator
@@ -45,7 +41,7 @@ router.post('/', requireAuth, async (req, res) => {
     }
 });
 
-// PUT update student
+// PUT 
 router.put('/:id', requireAuth, async (req, res) => {
     try {
         const updatedStudent = await Student.findByIdAndUpdate(
@@ -73,8 +69,7 @@ router.delete('/:id', requireAuth, async (req, res) => {
     }
 });
 
-// GET /api/students/stats (UPDATED for Lesson 8 - Aggregation)
-// NOTE: Put this ABOVE the '/:id' routes so it doesn't get confused with an ID
+// GET 
 router.get('/stats/summary', requireAuth, async (req, res) => {
     try {
         const stats = await Student.aggregate([

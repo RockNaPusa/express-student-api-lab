@@ -1,10 +1,9 @@
-// 4.1 Create routes/auth.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
-// 4.2 POST /auth/register (Create a User)
+// POST /auth/register 
 router.post('/register', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -22,7 +21,7 @@ router.post('/register', async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 });
-// 4.3 POST /auth/login (Issue a Token)
+// POST /auth/login
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -51,4 +50,3 @@ router.post('/login', async (req, res) => {
 
 module.exports = router;
 
-// updated
